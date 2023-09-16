@@ -1,5 +1,7 @@
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // routes
 import Router from './routes';
 // theme
@@ -18,6 +20,7 @@ export default function App() {
           <ScrollToTop />
           <StyledChart />
           <Router />
+          <ToastContainer />
         </ThemeProvider>
       </BrowserRouter>
     </HelmetProvider>

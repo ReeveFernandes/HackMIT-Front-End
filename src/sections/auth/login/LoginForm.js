@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // @mui
 import { Stack, IconButton, InputAdornment, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -40,10 +42,9 @@ export default function LoginForm() {
 
       if (Res) {
         navigate('/dashboard', { replace: true });
+        toast.success('login successfully');
       } else {
-        console.log('====================================');
-        console.log('Wrong Credential');
-        console.log('====================================');
+        toast.error('Incorrect Credentials');
       }
     } catch (err) {
       console.error(err.message);
@@ -74,11 +75,9 @@ export default function LoginForm() {
 
         <TextField value={role} onChange={onChangeHandler} name="role" label="Role" />
       </Stack>
-
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
         Forgot Password
       </Stack>
-
       <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
         Login
       </LoadingButton>
