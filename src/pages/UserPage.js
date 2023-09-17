@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { filter } from 'lodash';
+import { filter, set } from 'lodash';
 import { sentenceCase } from 'change-case';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -33,16 +33,16 @@ import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
-import USERLIST from '../_mock/user';
+// import USERLIST from '../_mock/user';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
+  { id: 'title', label: 'Title', alignRight: false },
+  { id: 'priority', label: 'Priority', alignRight: false },
+  { id: 'type', label: 'Type', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
+  { id: 'created_at', label: 'Created At', alignRight: false },
   { id: '' },
 ];
 
@@ -92,6 +92,8 @@ export default function UserPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [users, setUsers] = useState([]);
+
   const navigate = useNavigate();
   const BaseUrl = "https://velox-backend.onrender.com";
   const tableData = async () => {
@@ -103,6 +105,7 @@ export default function UserPage() {
       const Res = await response.json();
 
       console.log(Res);
+      setUsers(Res.tasks);
     } catch (err) {
       console.error(err.message);
     }
@@ -137,7 +140,7 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = users.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -177,9 +180,9 @@ export default function UserPage() {
     navigate('add-user', { replace: true });
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(users, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
@@ -209,39 +212,62 @@ export default function UserPage() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={users.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
-                    const selectedUser = selected.indexOf(name) !== -1;
+                    // const { id, name, role, status, company, avatarUrl, isVerified } = row;
+                    const { id, title, status, priority, type } = row;
+                    // const selectedUser = selected.indexOf(name) !== -1;
+                    const selectedUser = selected.indexOf(title) !== -1;
 
                     return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={id} tabIndex={-1} 
+                      // role="checkbox"
+                       selected={selectedUser}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
+                          {/* <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} /> */}
+                          {/* <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, title)} /> */}
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
+                            {/* <Avatar alt={name} src={avatarUrl} /> */}
+                            {/* <Avatar
+                              alt={title}
+                              // src={avatarUrl}
+                            /> */}
                             <Typography variant="subtitle2" noWrap>
-                              {name}
+                              {/* {name} */}
+                              {title}
                             </Typography>
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{company}</TableCell>
+                        {/* <TableCell align="left">{company}</TableCell> */}
+                        <TableCell align="left">{priority}</TableCell>
 
-                        <TableCell align="left">{role}</TableCell>
+                        <TableCell align="left">{type}</TableCell>
 
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+                        {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
 
                         <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
+                          <Label color={(status === 'assigned' && 'warning') || 'success'}>
+                            {sentenceCase(status)}
+                          </Label>
+                        </TableCell>
+
+                        <TableCell align="left">
+                          {new Date(row.created_at).toLocaleDateString('en-US', {
+                            minute: 'numeric',
+                            hour: 'numeric',
+                            year: 'numeric',
+                            month: 'numeric',
+                            day: 'numeric',
+                          })}
                         </TableCell>
 
                         <TableCell align="right">
@@ -289,7 +315,7 @@ export default function UserPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={users.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
