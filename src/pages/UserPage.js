@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
 import {
@@ -91,6 +91,25 @@ export default function UserPage() {
 
   const navigate = useNavigate();
 
+  const tableData = async () => {
+    try {
+      const response = await fetch(`https://velox-backend.onrender.com/task?user_id=${localStorage.getItem('id')}`, {
+        method: 'GET',
+      });
+
+      const Res = await response.json();
+
+      console.log(Res);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    console.log('uses');
+    tableData();
+  }, []);
+
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -162,7 +181,7 @@ export default function UserPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            User
+            Task
           </Typography>
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={onClickHandler}>
             New Task

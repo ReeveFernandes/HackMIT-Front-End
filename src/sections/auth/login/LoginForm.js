@@ -43,7 +43,7 @@ export default function LoginForm() {
       if (Res.status) {
         navigate('/dashboard', { replace: true });
         toast.success('login successfully');
-        localStorage.setItem('id', Res.message);
+        localStorage.setItem('id', Res.id);
       } else {
         toast.error('Incorrect Credentials');
       }
