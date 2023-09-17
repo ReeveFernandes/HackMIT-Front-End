@@ -15,6 +15,7 @@ export default function LoginForm() {
   const [title, setTitle] = useState();
   const [type, setType] = useState();
   const [priority, setPriority] = useState();
+  const [details, setDetails] = useState();
 
   const onChangeHandler = (e) => {
     if (e.target.name === 'title') {
@@ -25,6 +26,9 @@ export default function LoginForm() {
     }
     if (e.target.name === 'priority') {
       setPriority(e.target.value);
+    }
+    if (e.target.name === 'details') {
+      setDetails(e.target.value);
     }
   };
 
@@ -58,6 +62,8 @@ export default function LoginForm() {
         <TextField value={type} onChange={onChangeHandler} name="type" label="Type" />
 
         <TextField value={priority} onChange={onChangeHandler} name="priority" label="Priority" />
+
+        <TextField value={details} onChange={onChangeHandler} name="details" label="Details" />
 
         <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
           Submit
