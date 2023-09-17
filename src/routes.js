@@ -11,6 +11,7 @@ import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import AddTaskPage from './pages/AddTask';
 import UserLayout from './layouts/dashboard/UserLayout';
+import SpeechPage from './pages/SpeechPage';
 
 // ----------------------------------------------------------------------
 
@@ -37,6 +38,10 @@ export default function Router() {
     {
       path: 'login',
       element: <LoginPage />,
+    },
+    {
+      path: 'speech',
+      element: <SpeechPage />,
     },
     {
       element: <SimpleLayout />,
