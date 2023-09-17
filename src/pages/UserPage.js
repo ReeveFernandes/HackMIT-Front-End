@@ -3,6 +3,9 @@ import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { io } from "socket.io-client";
+import { toast } from 'react-toastify';
+
 // @mui
 import {
   Card,
@@ -90,10 +93,10 @@ export default function UserPage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const navigate = useNavigate();
-
+  const BaseUrl = "https://velox-backend.onrender.com";
   const tableData = async () => {
     try {
-      const response = await fetch(`https://velox-backend.onrender.com/task?user_id=${localStorage.getItem('id')}`, {
+      const response = await fetch(`${BaseUrl}/task?user_id=${localStorage.getItem('id')}`, {
         method: 'GET',
       });
 
@@ -105,9 +108,17 @@ export default function UserPage() {
     }
   };
 
+  async function newTableData(data) {
+    toast.success('Got New Task!');
+    tableData();
+  }
+
   useEffect(() => {
     console.log('uses');
     tableData();
+    const socket = io(BaseUrl);
+    const myId = localStorage.getItem('id');
+    socket.on(`new-task-${myId}`, newTableData);
   }, []);
 
   const handleOpenMenu = (event) => {
