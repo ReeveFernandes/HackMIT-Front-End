@@ -55,39 +55,40 @@ export default function DashboardAppPage() {
 
           <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits
-              title="Website Visits"
-              subheader="(+43%) than last year"
+              title="Average Tasks Completed Per Hour"
+              subheader="(+23%) Overall Improvement"
               chartLabels={[
-                '01/01/2003',
-                '02/01/2003',
-                '03/01/2003',
-                '04/01/2003',
-                '05/01/2003',
-                '06/01/2003',
-                '07/01/2003',
-                '08/01/2003',
-                '09/01/2003',
-                '10/01/2003',
-                '11/01/2003',
+                '01/01/2023',
+                '02/01/2023',
+                '03/01/2023',
+                '04/01/2023',
+                '05/01/2023',
+                '06/01/2023',
+                '07/01/2023',
+                '08/01/2023',
+                '09/01/2023',
+                '10/01/2023',
+                
+                
               ]}
               chartData={[
+                // {
+                //   name: 'PCA',
+                //   type: 'column',
+                //   fill: 'solid',
+                //   data: [23, 23, 10, 9, 13, 5, 17, 28, 44, 22, 30],
+                // },
                 {
-                  name: 'Team A',
-                  type: 'column',
-                  fill: 'solid',
-                  data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
-                },
-                {
-                  name: 'Team B',
+                  name: 'PCA Team 1',
                   type: 'area',
                   fill: 'gradient',
-                  data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
+                  data: [24, 31, 30, 30, 42, 53, 21, 34, 26, 47, 47],
                 },
                 {
-                  name: 'Team C',
+                  name: 'PCA Team 2',
                   type: 'line',
                   fill: 'solid',
-                  data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
+                  data: [30, 25, 36, 30, 45, 35, 44, 42, 49, 36, 36],
                 },
               ]}
             />
@@ -113,12 +114,12 @@ export default function DashboardAppPage() {
 
           <Grid item xs={12} md={6} lg={8}>
             <AppConversionRates
-              title="Conversion Rates"
+              title="Leading PCA's"
               subheader="(+43%) than last year"
               chartData={[
-                { label: 'Italy', value: 400 },
-                { label: 'Japan', value: 430 },
-                { label: 'China', value: 448 },
+                { label: 'Joe R', value: 400 },
+                { label: 'Abby A', value: 430 },
+                { label: 'Trevor G', value: 448 },
                 { label: 'Canada', value: 470 },
                 { label: 'France', value: 540 },
                 { label: 'Germany', value: 580 },
