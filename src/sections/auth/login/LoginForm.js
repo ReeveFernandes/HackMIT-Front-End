@@ -32,7 +32,7 @@ export default function LoginForm() {
   const handleClick = async () => {
     try {
       const body = { email, password, role };
-      const response = await fetch(`${process.env.API_URL}/login`, {
+      const response = await fetch('https://velox-backend.onrender.com/user/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -40,7 +40,7 @@ export default function LoginForm() {
 
       const Res = await response.json();
 
-      if (Res) {
+      if (Res.message) {
         navigate('/dashboard', { replace: true });
         toast.success('login successfully');
       } else {

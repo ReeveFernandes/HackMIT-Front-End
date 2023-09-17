@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // @mui
 import {
   Card,
@@ -88,6 +89,8 @@ export default function UserPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const navigate = useNavigate();
+
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -140,6 +143,10 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
+  const onClickHandler = (e) => {
+    navigate('add-user', { replace: true });
+  };
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
@@ -149,7 +156,7 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title> Task | Velox </title>
       </Helmet>
 
       <Container>
@@ -157,8 +164,8 @@ export default function UserPage() {
           <Typography variant="h4" gutterBottom>
             User
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New User
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={onClickHandler}>
+            New Task
           </Button>
         </Stack>
 
