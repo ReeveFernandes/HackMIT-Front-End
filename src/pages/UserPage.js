@@ -76,6 +76,15 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
+const BaseUrl = "https://velox-backend.onrender.com";
+
+const socket = io(BaseUrl, {
+  protocols: ['websocket', 'polling', 'flashsocket'],
+  autoConnect: false,
+});
+socket.on(`connection`, () => {
+  console.log('socket connected');
+});
 
 export default function UserPage() {
   const [open, setOpen] = useState(null);
@@ -95,7 +104,7 @@ export default function UserPage() {
   const [users, setUsers] = useState([]);
 
   const navigate = useNavigate();
-  const BaseUrl = "https://velox-backend.onrender.com";
+
   const tableData = async () => {
     try {
       const response = await fetch(`${BaseUrl}/task?user_id=${localStorage.getItem('id')}`, {
@@ -112,15 +121,17 @@ export default function UserPage() {
   };
 
   async function newTableData(data) {
-    toast.success('Got New Task!');
+    console.log('newTableData');
+    toast.success('New Task Assigned!');
     tableData();
   }
 
   useEffect(() => {
     console.log('uses');
     tableData();
-    const socket = io(BaseUrl);
+
     const myId = localStorage.getItem('id');
+    socket.connect();
     socket.on(`new-task-${myId}`, newTableData);
   }, []);
 
@@ -225,9 +236,9 @@ export default function UserPage() {
                     const selectedUser = selected.indexOf(title) !== -1;
 
                     return (
-                      <TableRow hover key={id} tabIndex={-1} 
-                      // role="checkbox"
-                       selected={selectedUser}>
+                      <TableRow hover key={id} tabIndex={-1}
+                        // role="checkbox"
+                        selected={selectedUser}>
                         <TableCell padding="checkbox">
                           {/* <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} /> */}
                           {/* <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, title)} /> */}
