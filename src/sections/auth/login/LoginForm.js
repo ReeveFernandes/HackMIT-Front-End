@@ -40,9 +40,10 @@ export default function LoginForm() {
 
       const Res = await response.json();
 
-      if (Res.message) {
+      if (Res.status) {
         navigate('/dashboard', { replace: true });
         toast.success('login successfully');
+        localStorage.setItem('id', Res.message);
       } else {
         toast.error('Incorrect Credentials');
       }
